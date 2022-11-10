@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fight
+{% endblock %}
+
+{% block body %}
+    <main class="arena">
+        {% for cards in decks %}
+            <div class="deck">
+                {% for card in cards %}
+                    <div class="gamecard">
+                        {{ card.name }}
+                        {{ card.life }}
+                        {{ card.magic }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </main>
+{% endblock %}
