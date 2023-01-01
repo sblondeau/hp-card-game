@@ -3,15 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\CardRepository;
+use App\Service\Actions\Selectionnable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CardRepository::class)]
-class Card
+class Card implements Selectionnable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    private string $identifier;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -25,12 +28,17 @@ class Card
     #[ORM\ManyToOne(inversedBy: 'cards')]
     private ?Player $player = null;
 
+    public function __construct()
+    {
+        $this->identifier = uniqid();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -76,5 +84,13 @@ class Card
         $this->player = $player;
 
         return $this;
+    }
+
+    /**
+     * Get the value of identifier
+     */
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
     }
 }

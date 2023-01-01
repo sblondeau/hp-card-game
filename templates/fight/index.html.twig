@@ -4,17 +4,35 @@
 {% endblock %}
 
 {% block body %}
-    <main class="arena">
-        {% for cards in decks %}
-            <div class="deck">
-                {% for card in cards %}
-                    <div class="gamecard">
-                        {{ card.name }}
-                        {{ card.life }}
-                        {{ card.magic }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-    </main>
+	<main class="arena">
+		<h1>fight</h1>
+		{{ playerSwitcher.currentPlayer.name }}
+		<a href="{{ path('reset') }}">Reset</a>
+
+		{% for player in playerSwitcher.players %}
+			<div class="deck">
+				<h3>{{ player.name }}</h3>
+				{% for card in player.cards %}
+					{# TODO Bug le loop.index0 reprend pour chaque player donc meme carte ciblée 2 fois, trouver id unique #}
+					<a href="play/{{ card.identifier }}" 
+					class="gamecard
+						{{ app.session.get('actioner').attacker is defined and app.session.get('actioner').attacker == card ? 'attacker' }}
+
+						{{ possibleTargets is defined and card in possibleTargets ? 'targetable' }}
+					">
+						{{ card.name }}
+						{{ card.life }}
+						{{ card.magic }}
+					</a>
+				{% endfor %}
+
+				{% for action in player.actions %}
+					<a href="play/{{ action.identifier }}">{{ action.name }}</a>
+				{% endfor %}
+
+			</div>
+
+		{% endfor %}
+		<a href="play/fight">Fight</a>
+	</main>
 {% endblock %}

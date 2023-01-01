@@ -8,12 +8,12 @@ use App\Service\CardFactory;
 use App\Service\PlayerFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class FightTest extends KernelTestCase
+class FactoryTest extends KernelTestCase
 {
     public function setUp(): void
     {
         $cardFactory = static::getContainer()->get(CardFactory::class);
-        $playerFactory = static::getContainer()->get(PlayerFactory::class);
+        $this->playerFactory = static::getContainer()->get(PlayerFactory::class);
 
         $this->drago = $cardFactory->create('Drago', 20, 10);
         $this->harry = $cardFactory->create('Harry', 10, 20);
@@ -47,9 +47,8 @@ class FightTest extends KernelTestCase
 
     public function testCreatePlayer(): void
     {
-        $playerFactory = new PlayerFactory();
-        $player1 = $playerFactory->create('player1', [$this->harry, $this->ron]);
-        $player2 = $playerFactory->create('player2', [$this->drago]);
+        $player2 = $this->playerFactory->create('player2', [$this->drago]);
+        $player1 = $this->playerFactory->create('player1', [$this->harry, $this->ron]);
 
         $this->assertCount(2, $player1->getCards());
         $this->assertCount(1, $player2->getCards());

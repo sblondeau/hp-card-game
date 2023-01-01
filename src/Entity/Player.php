@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\PlayerRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Card;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PlayerRepository;
+use App\Service\Actions\Actionnable;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: PlayerRepository::class)]
 class Player
@@ -21,9 +23,12 @@ class Player
     #[ORM\OneToMany(mappedBy: 'player', targetEntity: Card::class)]
     private Collection $cards;
 
+    private Collection $actions;
+
     public function __construct()
     {
         $this->cards = new ArrayCollection();
+        $this->actions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,6 +74,21 @@ class Player
                 $card->setPlayer(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Action>
+     */
+    public function getActions(): Collection
+    {
+        return $this->actions;
+    }
+
+    public function addAction(Actionnable $action): self
+    {
+        $this->actions->add($action);
 
         return $this;
     }
