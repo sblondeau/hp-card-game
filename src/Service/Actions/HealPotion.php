@@ -7,8 +7,7 @@ use Doctrine\Common\Collections\Collection;
 class HealPotion extends AbstractAction
 {
     public const HEAL = 5;
-    public const MAGIC = 5;
-
+    protected int $cost = 5;    
     protected string $name = 'Heal';
 
     public function getDescription(): string
@@ -16,16 +15,18 @@ class HealPotion extends AbstractAction
         return 'Potion de soin';
     }
 
-    public function action(): void
+    protected function applyEffect(): void
     {
         $this->getTarget()->setLife($this->getTarget()->getLife() + self::HEAL);
-        $this->getAttacker()->setMagic($this->getAttacker()->getMagic() - self::MAGIC);
     }
 
-    public function getPossibleTargets(): Collection
+    public function getPossibleTargets(): ?Collection
     {
         $targets = $this->getPlayerSwitcher()->getCurrentPlayer()->getCards();
+        $possibleTargets = $targets->filter(function($target) {
+            return $target->getLife() < $target->getMaxLife();
+        });
 
-        return $targets;
+        return $possibleTargets;
     }
 }

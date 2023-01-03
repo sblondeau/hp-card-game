@@ -34,7 +34,6 @@ class ActionerTest extends KernelTestCase
         $actioner->setAttacker($this->harry);
         $actioner->setActionnable($fight);
         $actioner->setTarget($this->drago);
-
         $this->assertSame(85, $this->drago->getLife());
     }
     
@@ -110,4 +109,66 @@ class ActionerTest extends KernelTestCase
         $actioner->setTarget($this->drago);
     } 
 
+    public function testMagicConsumption(): void 
+    {
+        $actioner = new Actioner();
+        $actioner->setPlayerSwitcher($this->playerSwitcher);
+        $this->playerSwitcher->setCurrentPlayer($this->player1);
+        $heal = $this->player1->getActions()[0];  
+        $heal->setCost(5);
+        $this->drago->setLife(50);
+        $actioner->setAttacker($this->drago);
+        $actioner->setActionnable($heal);
+        $this->drago->setMagic(50);
+        $this->assertSame(50, $this->drago->getMagic());
+        $actioner->setTarget($this->drago);
+        $this->assertSame(45, $this->drago->getMagic());
+    }
+
+    public function testNotEnoughMagic(): void 
+    {
+        $this->expectExceptionMessage('Pas assez de magie');
+
+        $actioner = new Actioner();
+        $actioner->setPlayerSwitcher($this->playerSwitcher);
+        $this->playerSwitcher->setCurrentPlayer($this->player1);
+        $heal = $this->player1->getActions()[0];  
+        $heal->setCost(10);
+        $this->drago->setLife(50);
+
+        $actioner->setAttacker($this->drago);
+        $actioner->setActionnable($heal);
+        $this->drago->setMagic(4);
+        $this->assertSame(4, $this->drago->getMagic());
+        $actioner->setTarget($this->drago);
+    }
+
+    public function testMaxLife(): void 
+    {
+        $actioner = new Actioner();
+        $actioner->setPlayerSwitcher($this->playerSwitcher);
+        $this->playerSwitcher->setCurrentPlayer($this->player1);
+        $heal = $this->player1->getActions()[0];  
+
+        $actioner->setAttacker($this->drago);
+        $this->drago->setMaxLife(100);
+        $this->drago->setLife(98);
+        
+        $actioner->setActionnable($heal);
+        $actioner->setTarget($this->drago);
+        $this->assertSame(100, $this->drago->getLife());
+    }
+
+    public function testNoTargetForActionCard()
+    {
+        $this->expectExceptionMessage('The card is not usable');
+        $actioner = new Actioner();
+        $actioner->setPlayerSwitcher($this->playerSwitcher);
+        $this->playerSwitcher->setCurrentPlayer($this->player1);
+        $heal = $this->player1->getActions()[0];  
+
+        $actioner->setAttacker($this->drago);
+        $actioner->setActionnable($heal);
+
+    }
 }

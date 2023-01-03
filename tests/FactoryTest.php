@@ -29,8 +29,6 @@ class FactoryTest extends KernelTestCase
 
         $this->assertInstanceOf(Card::class, $harry);
         $this->assertSame(10, $harry->getLife());
-        // $routerService = static::getContainer()->get('router');
-        // $myCustomService = static::getContainer()->get(CustomService::class);
     }
 
     public function testCreateDeck(): void

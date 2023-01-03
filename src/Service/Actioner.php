@@ -73,11 +73,16 @@ class Actioner
 
         $this->actionnable->setTarget($target);
 
+        if(!$this->actionnable->isValidAttacker()) {
+            throw new Exception('Pas assez de magie');
+        }
+
         if(!$this->actionnable->isValidTarget()) {
             throw new Exception('The target card is not valid');
         }
 
         $this->target = $target;
+
         $this->actionnable->action();
 
         $this->reset();
@@ -115,10 +120,14 @@ class Actioner
             throw new Exception('The action card is not valid');
         }
 
-        $this->actionnable = $actionnable;
+        $actionnable->setAttacker($this->attacker);
+        $actionnable->setPlayerSwitcher($this->playerSwitcher);
 
-        $this->actionnable->setAttacker($this->attacker);
-        $this->actionnable->setPlayerSwitcher($this->playerSwitcher);
+        if($actionnable->getPossibleTargets()->isEmpty()) {
+            throw new Exception('The card is not usable');
+        }
+
+        $this->actionnable = $actionnable;
 
         return $this;
     }

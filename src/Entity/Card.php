@@ -28,6 +28,9 @@ class Card implements Selectionnable
     #[ORM\ManyToOne(inversedBy: 'cards')]
     private ?Player $player = null;
 
+    #[ORM\Column]
+    private ?int $maxLife = null;
+
     public function __construct()
     {
         $this->identifier = uniqid();
@@ -57,6 +60,10 @@ class Card implements Selectionnable
 
     public function setLife(int $life): self
     {
+        if($life > $this->getMaxLife()) {
+            $life = $this->getMaxLife();
+        }
+        
         $this->life = $life;
 
         return $this;
@@ -92,5 +99,17 @@ class Card implements Selectionnable
     public function getIdentifier(): string
     {
         return $this->identifier;
+    }
+
+    public function getMaxLife(): ?int
+    {
+        return $this->maxLife;
+    }
+
+    public function setMaxLife(int $maxLife): self
+    {
+        $this->maxLife = $maxLife;
+
+        return $this;
     }
 }

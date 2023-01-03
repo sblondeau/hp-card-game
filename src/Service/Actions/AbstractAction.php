@@ -13,10 +13,24 @@ abstract class AbstractAction implements Actionnable, Selectionnable
     private ?PlayerSwitcher $playerSwitcher = null;
     protected string $name;
     protected string $identifier;
+    protected int $cost = 0;
 
     public function __construct()
     {
         $this->identifier = uniqid();
+    }
+
+    public function action(): void
+    {
+        $this->applyEffect();
+        $this->applyCost();
+    }
+
+    abstract protected function applyEffect(): void;
+
+    protected function applyCost(): void
+    {
+        $this->getAttacker()->setMagic($this->getAttacker()->getMagic() - $this->getCost());
     }
 
     /**
@@ -74,11 +88,16 @@ abstract class AbstractAction implements Actionnable, Selectionnable
         return $this;
     }
 
-    abstract public function getPossibleTargets(): Collection;
+    abstract public function getPossibleTargets(): ?Collection;
 
     public function isValidTarget(): bool 
     {
         return $this->getPossibleTargets()->contains($this->getTarget());
+    }
+
+    public function isValidAttacker(): bool
+    {
+        return $this->getAttacker()->getMagic() >= $this->getCost();
     }
 
     /**
@@ -95,5 +114,23 @@ abstract class AbstractAction implements Actionnable, Selectionnable
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Get the value of cost
+     */
+    public function getCost(): int
+    {
+        return $this->cost;
+    }
+
+    /**
+     * Set the value of cost
+     */
+    public function setCost(int $cost): self
+    {
+        $this->cost = $cost;
+
+        return $this;
     }
 }

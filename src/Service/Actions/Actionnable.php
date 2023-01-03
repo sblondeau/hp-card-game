@@ -16,5 +16,7 @@ interface Actionnable
     public function getPlayerSwitcher(): ?PlayerSwitcher;
     public function setPlayerSwitcher(?PlayerSwitcher $playerSwitcher): static;
     public function isValidTarget(): bool;
-    public function getPossibleTargets(): Collection;
+    public function getPossibleTargets(): ?Collection;
+    public function isValidAttacker(): bool;
+    public function getCost(): int;
 }
