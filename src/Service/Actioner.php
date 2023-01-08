@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Card;
 use App\Service\Actions\Actionnable;
 use App\Service\Actions\Fight;
+use App\Service\Actions\Selectionnable;
 use Exception;
 
 class Actioner
@@ -110,8 +111,12 @@ class Actioner
     /**
      * Set the value of actionnable
      */
-    public function setActionnable(?Actionnable $actionnable): self
+    public function setActionnable(?Selectionnable $actionnable): self
     {
+        if(!$actionnable instanceof Actionnable) {
+            throw new Exception('Vous devez choisir une carte action'); 
+        }
+
         if(!$this->getAttacker() instanceof Card) {
             throw new Exception('You have to select an attacker card first');
         }

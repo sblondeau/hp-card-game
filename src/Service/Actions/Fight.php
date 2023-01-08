@@ -17,7 +17,7 @@ class Fight extends AbstractAction
 
     public function getPossibleTargets(): ?Collection
     {
-        $targets = $this->getPlayerSwitcher()->getNextPlayer()->getCards();
+        $targets = $this->getPlayerSwitcher()->getOtherPlayersCards();
 
         return $targets;
     }

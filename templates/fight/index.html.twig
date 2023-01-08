@@ -4,34 +4,52 @@
 {% endblock %}
 
 {% block body %}
-	<main class="arena">
-		<h1>fight</h1>
-		{{ playerSwitcher.currentPlayer.name }}
-		<a href="{{ path('reset') }}">Reset</a>
+	<main class="container-fluid">
+		<h1>Arena name</h1>
+		<a class="btn btn-danger position-absolute top-0 end-0 m-3" href="{{ path('reset') }}">Reset</a>
+		<a class="btn btn-secondary" href="play/fight">Fight</a>
 
 		{% for player in playerSwitcher.players %}
-			<div class="deck">
-				<h3>{{ player.name }}</h3>
-				{% for card in player.cards %}
-					<a href="play/{{ card.identifier }}" 
-					class="gamecard
-						{{ app.session.get('actioner').attacker is defined and app.session.get('actioner').attacker == card ? 'attacker' }}
+			<div class="d-flex justify-content-between m-3 p-3 {{ playerSwitcher.currentPlayer == player ? 'currentPlayer' : 'otherPlayer' }}">
+				<div class="d-flex gap-2">
+					{% for card in player.cards %}
+						<div class="card 
+						{% if app.session.get('actioner').attacker is not null %}
+							{% if app.session.get('actioner').attacker == card %}
+							 attacker
+							 {% else %}
+							 not-attacker
+							 {% endif %}
+					    {% endif %}  
+ 
+							 {{ possibleTargets is defined and card in possibleTargets ? 'targetable' }}">
+							<img src="{{ asset('build/images/placeholder.png' )}}" class="card-img" alt="...">
+							<a href="play/{{ card.identifier }}" >
+								<div class="card-img-overlay">
+									<h3 class="card-title">{{ card.name }}</h3>
+									<p class="card-text">{{ card.life }}</p>
+									<p class="card-text">{{ card.magic }}</p>
+								</div>
+							</a>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="d-flex">
+					{% for action in player.actions %}
+						<div class="card bg-warning">
+							<img src="{{ asset('build/images/placeholder.png' )}}" class="card-img" alt="...">
+							<a href="play/{{ action.identifier }}" class="">
+								<div class="card-img-overlay">
+									<h3 class="card-title">{{ action.name }}</h3>
+									<p class="card-text">{{ action.description ?? '' }}</p>
+								</div>
+							</a>
+						</div>
+					{% endfor %}
 
-						{{ possibleTargets is defined and card in possibleTargets ? 'targetable' }}
-					">
-						{{ card.name }}
-						{{ card.life }}
-						{{ card.magic }}
-					</a>
-				{% endfor %}
-
-				{% for action in player.actions %}
-					<a href="play/{{ action.identifier }}">{{ action.name }}</a>
-				{% endfor %}
-
+				</div>
 			</div>
 
 		{% endfor %}
-		<a href="play/fight">Fight</a>
 	</main>
 {% endblock %}

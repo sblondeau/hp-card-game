@@ -1,0 +1,80 @@
+@font-face {
+    font-family: HarryPotter;
+    src: url(../fonts/HarryPotter.ttf);
+}
+
+$secondary: #dddddd;
+$success: #a7e375;
+
+@import "~bootstrap/scss/bootstrap";
+
+:root {
+    --light: #fffcfc;
+    --intermediate: #8d8d8d;
+    --dark: #111111;
+    --card-width: 200px;
+    --spacing: 0.5rem;
+    --spacing2: 1rem;
+    --spacing3: 1.5rem;
+    --spacing4: 2rem;
+    --spacing5: 2.5rem;
+    font-family: HarryPotter;
+}
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.deck {
+    display: flex;
+    gap: var(--spacing);
+}
+
+.card {
+    width: var(--card-width);
+    aspect-ratio: 2/3;
+}
+
+.currentPlayer {
+    background-color: $success;
+}
+
+.otherPlayer {
+    background-color: $secondary;
+    .card {
+        opacity: 50%;
+    }
+}
+
+.currentPlayer .card:not(.attacker):not(.not-attacker):hover, .attacker {
+    transform: scale(1.1);
+    z-index: 10;
+    filter:brightness(110%);
+    box-shadow: 4px 4px 8px var(--intermediate);
+}
+
+.not-attacker {
+    filter: brightness(80%);
+    opacity: 50%;
+}
+
+
+.otherPlayer .targetable, .currentPlayer .targetable {
+    border: 3px solid $success;
+    filter: brightness(100%);
+    opacity: 1;
+}
+
+.targetable:hover {
+    transform: scale(1.05);
+    z-index: 8;
+    filter:brightness(110%);
+}

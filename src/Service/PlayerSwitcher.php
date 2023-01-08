@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Player;
+use Doctrine\Common\Collections\ArrayCollection;
 use SplObjectStorage;
 
 class PlayerSwitcher
@@ -100,5 +101,30 @@ class PlayerSwitcher
     public function switch()
     {
         $this->setCurrentPlayer($this->getNextPlayer());
+    }
+
+    public function getOtherPlayers()
+    {
+        foreach($this->players as $player) {
+            if($player !== $this->getCurrentPlayer()) {
+                $otherPlayers[] = $player;
+            }
+        }
+
+        return $otherPlayers;
+    } 
+    
+    public function getOtherPlayersCards()
+    {
+        $cards = new ArrayCollection();
+        foreach($this->players as $player) {
+            if($player !== $this->getCurrentPlayer()) {
+                foreach($player->getCards() as $card) {
+                    $cards->add($card);
+                }
+            }
+        }
+
+        return $cards;
     }
 }

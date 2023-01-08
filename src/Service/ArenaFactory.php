@@ -18,6 +18,7 @@ class ArenaFactory
         $goyle = $this->cardFactory->create('Goyle', 110, 40);
         $draco = $this->cardFactory->create('Draco', 90, 60);
         $grabb = $this->cardFactory->create('Grabb', 120, 35);
+
         $heal = new HealPotion();
         $player1 = $this->playerFactory->create(name: 'player1', cards: [$draco, $goyle, $grabb], actionnables: [$heal]);
         $heal = new HealPotion();
@@ -26,6 +27,7 @@ class ArenaFactory
         $arena = new SplObjectStorage();
         $arena->attach($player1);
         $arena->attach($player2);
+        
         return $arena;
     }
 }

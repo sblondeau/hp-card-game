@@ -57,16 +57,12 @@ class ArenaController extends AbstractController
                 $actioner->setActionnable($selectionnable);
                 $this->addFlash('success', 'action selected');
             } elseif (!$actioner->getTarget()) {
-                // todo get targetables et affichage
-                // TODO exception gestion si mauvais cliquage (sur allier par ex)
-                // TODO mauvais cliquage de tour
                 $actioner->setTarget($selectionnable);
-
                 $this->addFlash('success', 'turn terminated');
             }
         } catch (Exception $exception) {
             $error = $exception->getMessage();
-            $this->addFlash('error', $error);
+            $this->addFlash('danger', $error);
         }
 
         $session->set('actioner', $actioner);
