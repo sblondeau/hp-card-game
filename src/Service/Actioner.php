@@ -46,10 +46,13 @@ class Actioner
      */
     public function setAttacker(?Card $attacker): self
     {
+
         if($attacker !== null && !$this->getPlayerSwitcher()->getCurrentPlayer()->getCards()->contains($attacker)) {
             throw new Exception('Wrong player');
         }
-
+        if($this->getAttacker() === $attacker) {
+            $attacker = null;
+        }
         $this->attacker = $attacker;
 
         return $this;

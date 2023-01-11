@@ -2,7 +2,10 @@
 
 namespace App\Tests;
 
+use App\Entity\Card;
+use App\Entity\Player;
 use App\Service\Actioner;
+use App\Service\Actions\Actionnable;
 use App\Service\Actions\Fight;
 use App\Service\Actions\HealPotion;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -11,6 +14,12 @@ use App\Service\ArenaFactory;
 
 class ActionerTest extends KernelTestCase
 {
+    private PlayerSwitcher $playerSwitcher;
+    private Player $player1;
+    private Player $player2;
+    private Card $drago;
+    private Card $harry;
+    
     public function setUp(): void
     {
         $kernel = self::bootKernel();
@@ -170,5 +179,19 @@ class ActionerTest extends KernelTestCase
         $actioner->setAttacker($this->drago);
         $actioner->setActionnable($heal);
 
+    } 
+    
+    public function testReclickOnAttackerCard()
+    {
+        $actioner = new Actioner();        
+        $this->playerSwitcher->setCurrentPlayer($this->player1);
+        $actioner->setPlayerSwitcher($this->playerSwitcher);
+        $this->assertEmpty($actioner->getAttacker());
+        $actioner->setAttacker($this->drago);
+        $this->assertSame($this->drago, $actioner->getAttacker());
+        $actioner->setAttacker($this->drago);
+        $this->assertEmpty($actioner->getAttacker());
+
+        
     }
 }

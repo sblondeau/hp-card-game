@@ -51,6 +51,9 @@ class ArenaController extends AbstractController
             if (!$actioner->getAttacker()) {
                 $actioner->setAttacker($selectionnable);
                 $this->addFlash('success', 'attacker selected');
+            } elseif($actioner->getAttacker() === $selectionnable) {
+                $actioner->setAttacker($selectionnable);
+                $this->addFlash('success', 'attacker unselected');
             } elseif (!$actioner->getActionnable()) {
                 // todo gestion des autres cards actions
                 $selectionnable ??= new Fight();
