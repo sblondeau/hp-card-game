@@ -3,17 +3,20 @@
 namespace App\Service\Actions;
 
 use App\Entity\Card;
+use App\Service\Displayable;
 use App\Service\PlayerSwitcher;
 use Doctrine\Common\Collections\Collection;
 
-abstract class AbstractAction implements Actionnable, Selectionnable
+abstract class AbstractAction implements Actionnable, Selectionnable, Displayable
 {
     private ?Card $attacker = null;
     private ?Card $target = null;
     private ?PlayerSwitcher $playerSwitcher = null;
     protected string $name;
+    protected string $description = '';
     protected string $identifier;
     protected int $cost = 0;
+    protected string $image = '';
 
     public function __construct()
     {
@@ -132,5 +135,15 @@ abstract class AbstractAction implements Actionnable, Selectionnable
         $this->cost = $cost;
 
         return $this;
+    }
+
+    /**
+     * Get the value of description
+     */
+    abstract public function getDescription(): string;
+
+    public function getImage():string
+    {
+        return $this->image;
     }
 }

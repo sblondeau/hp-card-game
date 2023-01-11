@@ -9,7 +9,7 @@ use App\Service\Actions\Selectionnable;
 use Exception;
 
 class Actioner
-{
+{    
     private ?Card $attacker = null;
     private ?Card $target = null;
     private ?Actionnable $actionnable = null;

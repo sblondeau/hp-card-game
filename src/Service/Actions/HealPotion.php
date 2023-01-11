@@ -10,11 +10,6 @@ class HealPotion extends AbstractAction
     protected int $cost = 5;    
     protected string $name = 'Heal';
 
-    public function getDescription(): string
-    {
-        return 'Potion de soin';
-    }
-
     protected function applyEffect(): void
     {
         $this->getTarget()->setLife($this->getTarget()->getLife() + self::HEAL);
@@ -28,5 +23,10 @@ class HealPotion extends AbstractAction
         });
 
         return $possibleTargets;
+    }
+
+    public function getDescription(): string
+    {
+        return 'Soigne, ' . self::HEAL . ' points de vie';
     }
 }

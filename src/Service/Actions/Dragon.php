@@ -8,13 +8,14 @@ class Dragon extends AbstractAction
 {
     public const DAMAGE = 10;
     protected int $cost = 25;
-    protected string $name = 'Fight';
+    protected string $name = 'Dragon';
 
     protected function applyEffect(): void
     {
         $player = $this->getTarget()->getPlayer();
+
         foreach($player->getCards() as $target) {
-            $target->setLife($target()->getLife() - self::DAMAGE);
+            $target->setLife($target->getLife() - self::DAMAGE);
         }
     }
 
@@ -25,8 +26,8 @@ class Dragon extends AbstractAction
         return $targets;
     }
 
-    public function getIdentifier(): string
+    public function getDescription(): string
     {
-        return 'troll';
+        return 'Un dragon crache du feu et inflige ' . self::DAMAGE . ' points de dommage à tous les personnages du joueur sélectionné';
     }
 }

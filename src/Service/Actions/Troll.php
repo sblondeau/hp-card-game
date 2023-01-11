@@ -8,7 +8,7 @@ class Troll extends AbstractAction
 {
     public const DAMAGE = 15;
     protected int $cost = 15;
-    protected string $name = 'Fight';
+    protected string $name = 'Troll';
 
     protected function applyEffect(): void
     {
@@ -22,8 +22,8 @@ class Troll extends AbstractAction
         return $targets;
     }
 
-    public function getIdentifier(): string
+    public function getDescription(): string
     {
-        return 'troll';
+        return 'Vous envoyez un troll attaque avec son gourdin, ' . self::DAMAGE . ' points de dommage';
     }
 }

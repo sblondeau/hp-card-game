@@ -22,8 +22,8 @@ class Fight extends AbstractAction
         return $targets;
     }
 
-    public function getIdentifier(): string
+    public function getDescription(): string
     {
-        return 'fight';
+        return 'Attaque standard, ' . self::DAMAGE . ' points de dommage';
     }
 }
