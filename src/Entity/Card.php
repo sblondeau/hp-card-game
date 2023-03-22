@@ -25,7 +25,7 @@ class Card implements Selectionnable
     #[ORM\Column]
     private ?int $magic = null;
 
-    #[ORM\ManyToOne(inversedBy: 'cards')]
+    #[ORM\ManyToOne(inversedBy: 'cards', cascade: ["persist"])]
     private ?Player $player = null;
 
     #[ORM\Column]

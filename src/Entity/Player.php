@@ -20,15 +20,22 @@ class Player
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column]
+    private ?int $actionNumber = 3;
+
     #[ORM\OneToMany(mappedBy: 'player', targetEntity: Card::class)]
     private Collection $cards;
 
     private Collection $actions;
 
+    #[ORM\ManyToMany(targetEntity: Arena::class, mappedBy: 'players')]
+    private Collection $arenas;
+
     public function __construct()
     {
         $this->cards = new ArrayCollection();
         $this->actions = new ArrayCollection();
+        $this->arenas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -89,6 +96,39 @@ class Player
     public function addAction(Actionnable $action): self
     {
         $this->actions->add($action);
+
+        return $this;
+    }
+    public function removeAction(Actionnable $action): self
+    {
+        $this->actions->removeElement($action);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Arena>
+     */
+    public function getArenas(): Collection
+    {
+        return $this->arenas;
+    }
+
+    public function addArena(Arena $arena): self
+    {
+        if (!$this->arenas->contains($arena)) {
+            $this->arenas->add($arena);
+            $arena->addPlayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArena(Arena $arena): self
+    {
+        if ($this->arenas->removeElement($arena)) {
+            $arena->removePlayer($this);
+        }
 
         return $this;
     }

@@ -4,8 +4,8 @@ namespace App\Tests;
 
 use App\Entity\Card;
 use App\Entity\Player;
-use App\Service\CardFactory;
-use App\Service\PlayerFactory;
+use App\Service\Factory\CardFactory ;
+use App\Service\Factory\PlayerFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class FactoryTest extends KernelTestCase

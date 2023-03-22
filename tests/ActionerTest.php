@@ -6,11 +6,14 @@ use App\Entity\Card;
 use App\Entity\Player;
 use App\Service\Actioner;
 use App\Service\Actions\Actionnable;
+use App\Service\Actions\Dragon;
 use App\Service\Actions\Fight;
 use App\Service\Actions\HealPotion;
+use App\Service\Actions\Troll;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use App\Service\PlayerSwitcher;
-use App\Service\ArenaFactory;
+use App\Service\Factory\ArenaFactory;
+use SplObjectStorage;
 
 class ActionerTest extends KernelTestCase
 {
@@ -26,7 +29,12 @@ class ActionerTest extends KernelTestCase
         $this->playerSwitcher = static::getContainer()->get(PlayerSwitcher::class);
         $arenaFactory = static::getContainer()->get(ArenaFactory::class);
 
-        $players = $arenaFactory->create();
+        $arena = $arenaFactory->create();
+        $players = new SplObjectStorage();
+        foreach($arena->getPlayers() as $player) {
+            $players->attach($player);
+        }
+
         $this->playerSwitcher->setPlayers($players);
         $this->player1 = $this->playerSwitcher->getCurrentPlayer();
         $this->drago = $this->player1->getCards()[0];
@@ -190,8 +198,6 @@ class ActionerTest extends KernelTestCase
         $actioner->setAttacker($this->drago);
         $this->assertSame($this->drago, $actioner->getAttacker());
         $actioner->setAttacker($this->drago);
-        $this->assertEmpty($actioner->getAttacker());
-
-        
+        $this->assertEmpty($actioner->getAttacker());   
     }
 }

@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Factory;
 
+use App\Entity\Arena;
 use App\Service\Actions\Dragon;
 use App\Service\Actions\HealPotion;
 use App\Service\Actions\Troll;
+use App\Service\Factory\ArenaFactoryInterface;
 use SplObjectStorage;
 
-class ArenaFactory
+class ArenaFactory implements ArenaFactoryInterface
 {
     public function __construct(private CardFactory $cardFactory, private PlayerFactory $playerFactory)
     {
     }
 
-    public function create(): SplObjectStorage
+    public function create(): Arena
     {
         $harry = $this->cardFactory->create('Harry', 100, 50);
         $ron = $this->cardFactory->create('Ron', 100, 50);
@@ -29,9 +31,9 @@ class ArenaFactory
         $troll = new Troll();
         $player2 = $this->playerFactory->create(name: 'player2', cards: [$harry, $ron, $hermione], actionnables: [$heal, $troll]);
 
-        $arena = new SplObjectStorage();
-        $arena->attach($player1);
-        $arena->attach($player2);
+        $arena = new Arena();
+        $arena->addPlayer($player1);
+        $arena->addPlayer($player2);
         
         return $arena;
     }

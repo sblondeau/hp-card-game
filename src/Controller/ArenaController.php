@@ -6,11 +6,12 @@ use App\Entity\Player;
 use App\Service\Actioner;
 use App\Service\Actions\Fight;
 use App\Service\Actions\Selectionnable;
-use App\Service\ArenaFactory;
-use App\Service\CardFactory;
-use App\Service\PlayerFactory;
+use App\Service\Factory\ArenaFactory;
+use App\Service\Factory\ArenaOneFactory;
+use App\Service\Factory\ActionerFactory;
 use App\Service\PlayerSwitcher;
 use Exception;
+use SplObjectStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,16 +20,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArenaController extends AbstractController
 {
     #[Route('/', name: 'app_arena')]
-    public function index(ArenaFactory $arenaFactory, RequestStack $requestStack): Response
+    public function index(ArenaOneFactory $arenaOneFactory, RequestStack $requestStack, ActionerFactory $actionerFactory): Response
     {
         $session = $requestStack->getSession();
 
         if (!$session->has('actioner')) {
-            $playerSwitcher = new PlayerSwitcher();
-            $playerSwitcher->setPlayers($arenaFactory->create());
-
-            $session->set('actioner', new Actioner());
-            $session->get('actioner')->setPlayerSwitcher($playerSwitcher);
+            $session->set('actioner', $actionerFactory->create($arenaOneFactory));
         } elseif ($session->get('actioner')->getActionnable()) {
             $possibleTargets = $session->get('actioner')->getActionnable()->getPossibleTargets();
         }

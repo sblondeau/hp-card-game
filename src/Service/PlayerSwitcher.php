@@ -8,7 +8,7 @@ use SplObjectStorage;
 
 class PlayerSwitcher
 {
-    private Player $currentPlayer;
+    private ?Player $currentPlayer = null;
     
     public function __construct(private SplObjectStorage $players = new SplObjectStorage())
     {
@@ -83,8 +83,12 @@ class PlayerSwitcher
     /**
      * Get the value of currentPlayer
      */
-    public function getCurrentPlayer(): Player
+    public function getCurrentPlayer(): ?Player
     {
+        if($this->currentPlayer === null) {
+            $this->currentPlayer = $this->current();
+        }
+
         return $this->currentPlayer;
     }
 

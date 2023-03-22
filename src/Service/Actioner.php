@@ -6,14 +6,19 @@ use App\Entity\Card;
 use App\Service\Actions\Actionnable;
 use App\Service\Actions\Fight;
 use App\Service\Actions\Selectionnable;
+use App\Service\Actions\Troll;
 use Exception;
 
 class Actioner
-{    
+{
     private ?Card $attacker = null;
     private ?Card $target = null;
     private ?Actionnable $actionnable = null;
-    private ?PlayerSwitcher $playerSwitcher = null;
+
+    public function __construct(private ?PlayerSwitcher $playerSwitcher = new PlayerSwitcher())
+    {
+        
+    }
 
     /**
      * Get the value of playerSwitcher
@@ -47,10 +52,10 @@ class Actioner
     public function setAttacker(?Card $attacker): self
     {
 
-        if($attacker !== null && !$this->getPlayerSwitcher()->getCurrentPlayer()->getCards()->contains($attacker)) {
+        if ($attacker !== null && !$this->getPlayerSwitcher()->getCurrentPlayer()->getCards()->contains($attacker)) {
             throw new Exception('Wrong player');
         }
-        if($this->getAttacker() === $attacker) {
+        if ($this->getAttacker() === $attacker) {
             $attacker = null;
         }
         $this->attacker = $attacker;
@@ -71,17 +76,17 @@ class Actioner
      */
     public function setTarget(?Card $target): self
     {
-        if(!$this->getActionnable() instanceof Actionnable) {
+        if (!$this->getActionnable() instanceof Actionnable) {
             throw new Exception('You have to select an action first');
         }
 
         $this->actionnable->setTarget($target);
 
-        if(!$this->actionnable->isValidAttacker()) {
+        if (!$this->actionnable->isValidAttacker()) {
             throw new Exception('Pas assez de magie');
         }
 
-        if(!$this->actionnable->isValidTarget()) {
+        if (!$this->actionnable->isValidTarget()) {
             throw new Exception('The target card is not valid');
         }
 
@@ -89,14 +94,25 @@ class Actioner
 
         $this->actionnable->action();
 
+        $this->removeAction();
+
+        
         $this->reset();
+
 
         $this->getPlayerSwitcher()->switch();
 
         return $this;
     }
 
-    private function reset() 
+    private function removeAction(): void
+    {
+        $player = $this->getPlayerSwitcher()->getCurrentPlayer();
+
+        $player->removeAction($this->actionnable);
+    }
+
+    private function reset()
     {
         $this->attacker = null;
         $this->actionnable = null;
@@ -116,22 +132,22 @@ class Actioner
      */
     public function setActionnable(?Selectionnable $actionnable): self
     {
-        if(!$actionnable instanceof Actionnable) {
-            throw new Exception('Vous devez choisir une carte action'); 
+        if (!$actionnable instanceof Actionnable) {
+            throw new Exception('Vous devez choisir une carte action');
         }
 
-        if(!$this->getAttacker() instanceof Card) {
+        if (!$this->getAttacker() instanceof Card) {
             throw new Exception('You have to select an attacker card first');
         }
 
-        if(!$actionnable instanceof Fight && !$this->getPlayerSwitcher()->getCurrentPlayer()->getActions()->contains($actionnable)) {
+        if (!$actionnable instanceof Fight && !$this->getPlayerSwitcher()->getCurrentPlayer()->getActions()->contains($actionnable)) {
             throw new Exception('The action card is not valid');
         }
 
         $actionnable->setAttacker($this->attacker);
         $actionnable->setPlayerSwitcher($this->playerSwitcher);
 
-        if($actionnable->getPossibleTargets()->isEmpty()) {
+        if ($actionnable->getPossibleTargets()->isEmpty()) {
             throw new Exception('The card is not usable');
         }
 
