@@ -18,10 +18,10 @@ class ArenaFactory implements ArenaFactoryInterface
     public function create(): Arena
     {
         $harry = $this->cardFactory->create('Harry', 100, 50);
-        $ron = $this->cardFactory->create('Ron', 100, 50);
+        $ron = $this->cardFactory->create('Ron', 100, 50, 'ron.jpg');
         $hermione = $this->cardFactory->create('Hermione', 80, 70);
         $goyle = $this->cardFactory->create('Goyle', 110, 40);
-        $draco = $this->cardFactory->create('Draco', 90, 60);
+        $draco = $this->cardFactory->create('Draco', 90, 60, 'draco.jpg');
         $grabb = $this->cardFactory->create('Grabb', 120, 35);
 
         $heal = new HealPotion();

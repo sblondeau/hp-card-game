@@ -42,10 +42,10 @@ class ArenaOneFactory implements ArenaFactoryInterface
     private function setCardsPlayerOne(): array
     {
         $cards = [
-            $this->cardFactory->create('Harry', 100, 50),
-            $this->cardFactory->create('Ron', 100, 50),
-            $this->cardFactory->create('Hermione', 80, 70),
-            $this->cardFactory->create('Neville', 80, 70),
+            $this->cardFactory->create('Harry', 100, 50, 'harry.jpg'),
+            $this->cardFactory->create('Ron', 100, 50, 'ron.jpg'),
+            $this->cardFactory->create('Hermione', 80, 70, 'hermione.jpg'),
+            $this->cardFactory->create('Neville', 80, 70, 'neville.jpg'),
         ];
         $this->saveCards($cards);
 
@@ -55,7 +55,7 @@ class ArenaOneFactory implements ArenaFactoryInterface
     {
         $cards = [
             $this->cardFactory->create('Goyle', 110, 40),
-            $this->cardFactory->create('Draco', 90, 60),
+            $this->cardFactory->create('Draco', 90, 60, 'draco.jpg'),
             $this->cardFactory->create('Grabb', 120, 35),
         ];
 

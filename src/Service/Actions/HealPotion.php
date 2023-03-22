@@ -9,6 +9,7 @@ class HealPotion extends AbstractAction
     public const HEAL = 5;
     protected int $cost = 5;    
     protected string $name = 'Heal';
+    protected ?string $image = 'healpotion.jpg';
 
     protected function applyEffect(): void
     {

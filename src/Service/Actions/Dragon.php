@@ -9,6 +9,7 @@ class Dragon extends AbstractAction
     public const DAMAGE = 10;
     protected int $cost = 25;
     protected string $name = 'Dragon';
+    protected ?string $image = 'dragon.jpg';
 
     protected function applyEffect(): void
     {

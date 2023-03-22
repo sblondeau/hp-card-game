@@ -19,6 +19,9 @@ class Card implements Selectionnable
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255, nullable:true)]
+    private ?string $image = null;
+
     #[ORM\Column]
     private ?int $life = null;
 
@@ -109,6 +112,24 @@ class Card implements Selectionnable
     public function setMaxLife(int $maxLife): self
     {
         $this->maxLife = $maxLife;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of image
+     */
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set the value of image
+     */
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

@@ -43,6 +43,15 @@ body {
     aspect-ratio: 2/3;
 }
 
+.card-title {
+    color: var(--light);
+}
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .currentPlayer {
     background-color: $success;
 }

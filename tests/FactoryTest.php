@@ -10,12 +10,17 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class FactoryTest extends KernelTestCase
 {
+    private Card $harry;
+    private Card $drago;
+    private Card $ron;
+    private PlayerFactory $playerFactory;
+
     public function setUp(): void
     {
         $cardFactory = static::getContainer()->get(CardFactory::class);
         $this->playerFactory = static::getContainer()->get(PlayerFactory::class);
 
-        $this->drago = $cardFactory->create('Drago', 20, 10);
+        $this->drago = $cardFactory->create('Drago', 20, 10, 'draco.jpg');
         $this->harry = $cardFactory->create('Harry', 10, 20);
         $this->ron = $cardFactory->create('Ron', 10, 20);
     }
@@ -55,5 +60,10 @@ class FactoryTest extends KernelTestCase
         $this->assertCount(2, $player2->getCards());
 
         $this->assertSame('player2', $player2->getName());
+    }
+
+    public function testImage(): void
+    {
+        $this->assertSame('draco.jpg', $this->drago->getImage());
     }
 }

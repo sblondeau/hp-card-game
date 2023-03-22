@@ -16,7 +16,6 @@ abstract class AbstractAction implements Actionnable, Selectionnable, Displayabl
     protected string $description = '';
     protected string $identifier;
     protected int $cost = 0;
-    protected string $image = '';
 
     public function __construct()
     {
@@ -142,7 +141,7 @@ abstract class AbstractAction implements Actionnable, Selectionnable, Displayabl
      */
     abstract public function getDescription(): string;
 
-    public function getImage():string
+    public function getImage():?string
     {
         return $this->image;
     }

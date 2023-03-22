@@ -9,6 +9,7 @@ class Troll extends AbstractAction
     public const DAMAGE = 15;
     protected int $cost = 15;
     protected string $name = 'Troll';
+    protected ?string $image = 'troll.jpg';
 
     protected function applyEffect(): void
     {
