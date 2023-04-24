@@ -9,9 +9,9 @@ use Doctrine\Common\Collections\Collection;
 interface Actionnable
 {
     public function action(): void;
-    public function setAttacker(?Card $card): static;
+    public function setAttacker(?Selectionnable $card): static;
     public function getAttacker(): ?Card;
-    public function setTarget(?Card $card): static;
+    public function setTarget(?Selectionnable $card): static;
     public function getTarget(): ?Card;
     public function getPlayerSwitcher(): ?PlayerSwitcher;
     public function setPlayerSwitcher(?PlayerSwitcher $playerSwitcher): static;

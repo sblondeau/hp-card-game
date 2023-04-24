@@ -3,6 +3,8 @@
 namespace App\Service\Factory;
 
 use App\Entity\Arena;
+use App\Entity\Caracteristic;
+use App\Entity\Card;
 use App\Repository\ArenaRepository;
 use App\Repository\CardRepository;
 use App\Repository\PlayerRepository;
@@ -10,7 +12,6 @@ use App\Service\Actions\Dragon;
 use App\Service\Actions\HealPotion;
 use App\Service\Actions\Troll;
 use App\Service\Factory\ArenaFactoryInterface;
-use PhpParser\Node\Scalar\MagicConst\Dir;
 
 class ArenaOneFactory implements ArenaFactoryInterface
 {
@@ -41,8 +42,9 @@ class ArenaOneFactory implements ArenaFactoryInterface
 
     private function setCardsPlayerOne(): array
     {
+        $harry = $this->cardFactory->create('Harry', 100, 50, 'harry.jpg');
         $cards = [
-            $this->cardFactory->create('Harry', 100, 50, 'harry.jpg'),
+            $harry,
             $this->cardFactory->create('Ron', 100, 50, 'ron.jpg'),
             $this->cardFactory->create('Hermione', 80, 70, 'hermione.jpg'),
             $this->cardFactory->create('Neville', 80, 70, 'neville.jpg'),
@@ -51,6 +53,7 @@ class ArenaOneFactory implements ArenaFactoryInterface
 
         return $cards;
     }
+    
     private function setCardsPlayerTwo(): array
     {
         $cards = [

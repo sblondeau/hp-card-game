@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use TypeError;
 
 class ArenaController extends AbstractController
 {
@@ -60,6 +61,9 @@ class ArenaController extends AbstractController
                 $actioner->setTarget($selectionnable);
                 $this->addFlash('success', 'turn terminated');
             }
+        } catch (TypeError $typeError) {
+            $error = 'Mauvaise carte séléctionnée';
+            $this->addFlash('danger', $error);
         } catch (Exception $exception) {
             $error = $exception->getMessage();
             $this->addFlash('danger', $error);

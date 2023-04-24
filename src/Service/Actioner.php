@@ -49,7 +49,7 @@ class Actioner
     /**
      * Set the value of attacker
      */
-    public function setAttacker(?Card $attacker): self
+    public function setAttacker(?Selectionnable $attacker): self
     {
 
         if ($attacker !== null && !$this->getPlayerSwitcher()->getCurrentPlayer()->getCards()->contains($attacker)) {

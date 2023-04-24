@@ -13,6 +13,7 @@ abstract class AbstractAction implements Actionnable, Selectionnable, Displayabl
     private ?Card $target = null;
     private ?PlayerSwitcher $playerSwitcher = null;
     protected string $name;
+    protected ?string $image;
     protected string $description = '';
     protected string $identifier;
     protected int $cost = 0;
@@ -46,7 +47,7 @@ abstract class AbstractAction implements Actionnable, Selectionnable, Displayabl
     /**
      * Set the value of attacker
      */
-    public function setAttacker(?Card $attacker): static
+    public function setAttacker(?Selectionnable $attacker): static
     {
         $this->attacker = $attacker;
 
@@ -65,7 +66,7 @@ abstract class AbstractAction implements Actionnable, Selectionnable, Displayabl
     /**
      * Set the value of target
      */
-    public function setTarget(?Card $target): static
+    public function setTarget(?Selectionnable $target): static
     {
         $this->target = $target;
 

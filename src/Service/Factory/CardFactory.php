@@ -2,6 +2,7 @@
 
 namespace App\Service\Factory;
 
+use App\Entity\Caracteristic;
 use App\Entity\Card;
 
 class CardFactory
@@ -10,7 +11,16 @@ class CardFactory
     {
         $card = new Card();
         $card->setName($name)->setMaxLife($life)->setLife($life)->setMagic($magic)->setImage($image);
+        $card->setCaracteristic($this->createCaracteristic());
 
         return $card;
+    }
+
+    public function createCaracteristic($intelligence = 10)
+    {
+        $caracteristic = new Caracteristic();
+        $caracteristic->setIntelligence($intelligence);
+
+        return $caracteristic;
     }
 }

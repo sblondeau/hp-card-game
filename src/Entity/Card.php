@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CardRepository;
 use App\Service\Actions\Selectionnable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CardRepository::class)]
@@ -17,9 +19,10 @@ class Card implements Selectionnable
     private string $identifier;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $name = null;        // TODO relier des données de caract à un user et l'afficher
 
-    #[ORM\Column(length: 255, nullable:true)]
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
     #[ORM\Column]
@@ -34,11 +37,14 @@ class Card implements Selectionnable
     #[ORM\Column]
     private ?int $maxLife = null;
 
+    #[ORM\OneToOne(inversedBy: 'card', cascade: ['persist', 'remove'])]
+    private ?Caracteristic $caracteristic = null;
+
     public function __construct()
     {
         $this->identifier = uniqid();
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,10 +69,10 @@ class Card implements Selectionnable
 
     public function setLife(int $life): self
     {
-        if($life > $this->getMaxLife()) {
+        if ($life > $this->getMaxLife()) {
             $life = $this->getMaxLife();
         }
-        
+
         $this->life = $life;
 
         return $this;
@@ -130,6 +136,18 @@ class Card implements Selectionnable
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCaracteristic(): ?Caracteristic
+    {
+        return $this->caracteristic;
+    }
+
+    public function setCaracteristic(?Caracteristic $caracteristic): self
+    {
+        $this->caracteristic = $caracteristic;
 
         return $this;
     }
