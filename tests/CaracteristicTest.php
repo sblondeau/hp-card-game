@@ -75,9 +75,30 @@ class CaracteristicTest extends KernelTestCase
         $this->assertSame(15, $this->drago->getCaracteristic()->getIntelligence());
 
         $this->drago->getCaracteristic()->getIntelligenceModifier()->setDuration(0);
-        dump($this->drago->getCaracteristic()->getIntelligence());
-        dump($this->drago->getCaracteristic()->getIntelligence());
 
+        $this->assertSame(10, $this->drago->getCaracteristic()->getIntelligence());
+    }
+
+    public function testIntelligenceTimeModifierWithSwitch(): void
+    {
+        $intelligenceModifier = new CaracteristicModifier(5, 4);
+        $cardCaracteristic = $this->drago->getCaracteristic();
+        $cardCaracteristic->setIntelligenceModifier($intelligenceModifier);
+        // P1 4
+        $this->assertSame(15, $this->drago->getCaracteristic()->getIntelligence());
+        $this->actioner->getPlayerSwitcher()->switch();
+
+        // P2
+        $this->actioner->getPlayerSwitcher()->switch();
+        //P1 2
+        $this->assertSame(15, $this->drago->getCaracteristic()->getIntelligence());
+        $this->actioner->getPlayerSwitcher()->switch();
+
+        $this->actioner->getPlayerSwitcher()->switch();
+        // P1 again : turn 2. End its turn, then modifier timer is finished 0
+
+        $this->assertSame(10, $this->drago->getCaracteristic()->getIntelligence());
+        $this->actioner->getPlayerSwitcher()->switch();
         $this->assertSame(10, $this->drago->getCaracteristic()->getIntelligence());
     }
 

@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CaracteristicModifierRepository;
+use SplSubject;
+use SplObserver;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CaracteristicModifierRepository;
 
 #[ORM\Entity(repositoryClass: CaracteristicModifierRepository::class)]
-class CaracteristicModifier
+class CaracteristicModifier implements SplObserver
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -67,5 +69,12 @@ class CaracteristicModifier
         $this->caracteristic = $caracteristic;
 
         return $this;
+    }
+
+    // pattern Observer
+    public function update(SplSubject $subject): void
+    {
+        // dd($subject);
+        $this->setDuration($this->getDuration() - 1);
     }
 }

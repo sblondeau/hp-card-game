@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\CaracteristicModifier;
 use App\Repository\CaracteristicRepository;
+use SplObserver;
 
 #[ORM\Entity(repositoryClass: CaracteristicRepository::class)]
 class Caracteristic

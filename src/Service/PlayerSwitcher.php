@@ -4,14 +4,19 @@ namespace App\Service;
 
 use App\Entity\Player;
 use Doctrine\Common\Collections\ArrayCollection;
-use SplObjectStorage;
 
-class PlayerSwitcher
+use SplObjectStorage;
+use SplObserver;
+use SplSubject;
+
+class PlayerSwitcher implements SplSubject
 {
     private ?Player $currentPlayer = null;
-    
-    public function __construct(private SplObjectStorage $players = new SplObjectStorage())
-    {
+
+    public function __construct(
+        private SplObjectStorage $players = new SplObjectStorage(),
+        private SplObjectStorage $observers = new SplObjectStorage()
+    ) {
     }
 
     public function setPlayers(SplObjectStorage $players)
@@ -33,7 +38,7 @@ class PlayerSwitcher
     public function next(): void
     {
         $this->players->next();
-        if(!$this->players->valid()) {
+        if (!$this->players->valid()) {
             $this->players->rewind();
         }
     }
@@ -41,9 +46,9 @@ class PlayerSwitcher
     public function prev(): void
     {
         $actual = $this->players->current();
-        
+
         $this->players->rewind();
-        while($this->players->current() === $actual) {
+        while ($this->players->current() === $actual) {
             $this->players->next();
         }
     }
@@ -53,10 +58,10 @@ class PlayerSwitcher
         return $this->players;
     }
 
-    public function getNextPlayer() 
+    public function getNextPlayer()
     {
-        foreach($this->players as $player) {
-            if($player === $this->getCurrentPlayer()) {
+        foreach ($this->players as $player) {
+            if ($player === $this->getCurrentPlayer()) {
                 $this->next();
                 return $this->current();
             }
@@ -67,13 +72,13 @@ class PlayerSwitcher
     {
         $players = clone $this->getPlayers();
         foreach ($players as $player) {
-            foreach($player->getCards() as $card) {
-                if($card->getIdentifier() === $id) {
+            foreach ($player->getCards() as $card) {
+                if ($card->getIdentifier() === $id) {
                     return $card;
                 }
             }
-            foreach($player->getActions() as $action) {
-                if($action->getIdentifier() === $id) {
+            foreach ($player->getActions() as $action) {
+                if ($action->getIdentifier() === $id) {
                     return $action;
                 }
             }
@@ -85,7 +90,7 @@ class PlayerSwitcher
      */
     public function getCurrentPlayer(): ?Player
     {
-        if($this->currentPlayer === null) {
+        if ($this->currentPlayer === null) {
             $this->currentPlayer = $this->current();
         }
 
@@ -104,31 +109,60 @@ class PlayerSwitcher
 
     public function switch()
     {
+        $this->notify();
         $this->setCurrentPlayer($this->getNextPlayer());
     }
 
+
+
     public function getOtherPlayers()
     {
-        foreach($this->players as $player) {
-            if($player !== $this->getCurrentPlayer()) {
+        foreach ($this->players as $player) {
+            if ($player !== $this->getCurrentPlayer()) {
                 $otherPlayers[] = $player;
             }
         }
 
         return $otherPlayers;
-    } 
-    
+    }
+
     public function getOtherPlayersCards()
     {
         $cards = new ArrayCollection();
-        foreach($this->players as $player) {
-            if($player !== $this->getCurrentPlayer()) {
-                foreach($player->getCards() as $card) {
+        foreach ($this->players as $player) {
+            if ($player !== $this->getCurrentPlayer()) {
+                foreach ($player->getCards() as $card) {
                     $cards->add($card);
                 }
             }
         }
 
         return $cards;
+    }
+
+    // Pattern observer
+    public function attach(SplObserver $observer): void
+    {
+        $this->observers->attach($observer);
+    }
+
+    public function detach(SplObserver $observer): void
+    {
+        $this->observers->detach($observer);
+    }
+
+    public function notify(): void
+    {
+        foreach ($this->getCurrentPlayer()->getCards() as $card) {
+            $caracteristic = $card->getCaracteristic();
+
+            if ($caracteristic->getIntelligenceModifier() instanceof SplObserver) {
+                $this->attach($caracteristic->getIntelligenceModifier());
+            }
+        }
+
+        foreach ($this->observers as $observer) {
+            $observer->update($this);
+        }
     }
 }
