@@ -107,10 +107,12 @@ class PlayerSwitcher implements SplSubject
         return $this;
     }
 
-    public function switch()
+    public function switch(): self
     {
         $this->notify();
         $this->setCurrentPlayer($this->getNextPlayer());
+
+        return $this;
     }
 
 

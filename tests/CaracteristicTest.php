@@ -14,6 +14,7 @@ use App\Service\PlayerSwitcher;
 use App\Entity\CardCaracteristic;
 use App\Service\Actions\HealPotion;
 use App\Entity\CaracteristicModifier;
+use App\Service\Actions\IntelligencePotion;
 use App\Service\Factory\ArenaFactory;
 use App\Service\Factory\PlayerFactory;
 use App\Service\Factory\ActionerFactory;
@@ -36,6 +37,7 @@ class CaracteristicTest extends KernelTestCase
         $this->actioner = $actionerFactory->create($arenaFactory);
         $currentPlayer = $this->actioner->getPlayerSwitcher()->getCurrentPlayer();
         $this->drago = $currentPlayer->getCards()[0];
+        $this->harry = $this->actioner->getPlayerSwitcher()->getNextPlayer()->getCards()[0];
     }
 
     public function testIntelligence(): void
@@ -102,6 +104,22 @@ class CaracteristicTest extends KernelTestCase
         $this->assertSame(10, $this->drago->getCaracteristic()->getIntelligence());
     }
 
+    public function testIntelligencePotion(): void
+    {
+        $this->assertSame(10, $this->drago->getCaracteristic()->getIntelligence());
 
+        $intelligencePotion = new IntelligencePotion();
+        $this->drago->getPlayer()->addAction($intelligencePotion);
+        $this->actioner->setAttacker($this->drago);
+        $this->actioner->setActionnable($intelligencePotion);
+        $this->actioner->setTarget($this->drago);
+
+        $this->assertSame(15, $this->drago->getCaracteristic()->getIntelligence());
+        $this->actioner->getPlayerSwitcher()->switch()->switch()->switch();
+        $this->assertSame(15, $this->drago->getCaracteristic()->getIntelligence());
+        $this->actioner->getPlayerSwitcher()->switch();
+        $this->assertSame(10, $this->drago->getCaracteristic()->getIntelligence());
+
+    }
     
 }

@@ -2,15 +2,16 @@
 
 namespace App\Service\Factory;
 
+use App\Entity\Card;
 use App\Entity\Arena;
 use App\Entity\Caracteristic;
-use App\Entity\Card;
-use App\Repository\ArenaRepository;
-use App\Repository\CardRepository;
-use App\Repository\PlayerRepository;
-use App\Service\Actions\Dragon;
-use App\Service\Actions\HealPotion;
 use App\Service\Actions\Troll;
+use App\Service\Actions\Dragon;
+use App\Repository\CardRepository;
+use App\Repository\ArenaRepository;
+use App\Service\Actions\HealPotion;
+use App\Repository\PlayerRepository;
+use App\Service\Actions\IntelligencePotion;
 use App\Service\Factory\ArenaFactoryInterface;
 
 class ArenaOneFactory implements ArenaFactoryInterface
@@ -78,6 +79,8 @@ class ArenaOneFactory implements ArenaFactoryInterface
         yield new HealPotion();
         yield new HealPotion();
         yield new Dragon();
+        yield new IntelligencePotion();
+
     }
     private function actionPlayerTwo()
     {
