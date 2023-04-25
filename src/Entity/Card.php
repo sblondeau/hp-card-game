@@ -80,7 +80,8 @@ class Card implements Selectionnable
 
     public function getMagic(): ?int
     {
-        return $this->magic;
+        $bonus = $this->getCaracteristic()?->getIntelligence() ?? 0;
+        return $this->magic + floor($bonus / 2);
     }
 
     public function setMagic(int $magic): self

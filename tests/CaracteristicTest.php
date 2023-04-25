@@ -119,7 +119,16 @@ class CaracteristicTest extends KernelTestCase
         $this->assertSame(15, $this->drago->getCaracteristic()->getIntelligence());
         $this->actioner->getPlayerSwitcher()->switch();
         $this->assertSame(10, $this->drago->getCaracteristic()->getIntelligence());
-
     }
     
+    public function testIntelligenceMagicBonus(): void
+    {
+        $this->drago->setMagic(10);
+        $this->drago->getCaracteristic()->setIntelligence(10);
+        $this->assertSame(15, $this->drago->getMagic());
+        $this->drago->getCaracteristic()->setIntelligence(11);
+        $this->assertSame(15, $this->drago->getMagic());
+        $this->drago->getCaracteristic()->setIntelligence(12);
+        $this->assertSame(16, $this->drago->getMagic());
+    }
 }

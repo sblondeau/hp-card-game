@@ -30,10 +30,19 @@ class Caracteristic
         return $this->id;
     }
 
+    public function getIntelligenceDetails(): array
+    {
+        return [
+            'basic' => $this->intelligence,
+            'bonus' => $this?->getIntelligenceModifier()?->getQuantity() ?? 0,
+            'duration' => $this?->getIntelligenceModifier()?-> getDuration() ?? 0
+        ];
+    }
+
     public function getIntelligence(): ?int
     {
         $durationModifier = 1;
-        if($this->getIntelligenceModifier()?->getDuration() !== null && $this->getIntelligenceModifier()->getDuration()<= 0) {
+        if ($this->getIntelligenceModifier()?->getDuration() !== null && $this->getIntelligenceModifier()->getDuration() <= 0) {
             $durationModifier = 0;
         }
 
@@ -90,6 +99,4 @@ class Caracteristic
 
         return $this;
     }
-
-
 }

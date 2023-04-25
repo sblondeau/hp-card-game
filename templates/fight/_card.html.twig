@@ -1,0 +1,33 @@
+<div class="card
+						    {% if app.session.get('actioner').attacker is not null %}
+						        {% if app.session.get('actioner').attacker == card %}
+						            attacker
+						            {% else %}
+						            not-attacker
+						            {% endif %}
+						    {% endif %}
+		
+						    {{ possibleTargets is defined and card in possibleTargets ? 'targetable' }}">
+	<img src="{{ asset('build/images/cards/' ~ card.image )}}" class="card-img" alt="...">
+	<a href="play/{{ card.identifier }}">
+		<div class="card-img-overlay">
+			<h3 class="card-title">{{ card.name }}</h3>
+			<p class="card-text">Vie:
+				{{ card.life }}</p>
+			<p class="card-text">Magie:
+				{{ card.magic }}</p>
+			<p class="card-text">Intelligence :
+				{{ card.caracteristic.intelligenceDetails.basic ?? '' }}
+				{% if card.caracteristic.intelligenceDetails.bonus %}
+					(+
+					{{ card.caracteristic.intelligenceDetails.bonus }}
+					|
+					{{ card.caracteristic.intelligenceDetails.duration }}
+					turn
+					)
+				{% endif %}
+
+			</p>
+		</div>
+	</a>
+</div>

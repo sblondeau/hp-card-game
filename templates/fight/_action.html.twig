@@ -1,0 +1,9 @@
+<div class="card bg-warning">
+	<img src="{{ asset('build/images/actions/' ~ action.image )}}" class="card-img" alt="...">
+	<a href="play/{{ action.identifier }}" class="">
+		<div class="card-img-overlay">
+			<h3 class="card-title">{{ action.name }}</h3>
+			<p class="card-text">{{ action.description ?? '' }}</p>
+		</div>
+	</a>
+</div>

@@ -158,7 +158,7 @@ class PlayerSwitcher implements SplSubject
         foreach ($this->getCurrentPlayer()->getCards() as $card) {
             $caracteristic = $card->getCaracteristic();
 
-            if ($caracteristic->getIntelligenceModifier() instanceof SplObserver) {
+            if ($caracteristic?->getIntelligenceModifier() instanceof SplObserver) {
                 $this->attach($caracteristic->getIntelligenceModifier());
             }
         }

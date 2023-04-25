@@ -134,6 +134,7 @@ class ActionerTest extends KernelTestCase
         $heal = $this->player1->getActions()[0];  
         $heal->setCost(5);
         $this->drago->setLife(50);
+        $this->drago->setCaracteristic(null);
         $actioner->setAttacker($this->drago);
         $actioner->setActionnable($heal);
         $this->drago->setMagic(50);
@@ -154,6 +155,8 @@ class ActionerTest extends KernelTestCase
         $this->drago->setLife(50);
 
         $actioner->setAttacker($this->drago);
+        $this->drago->setCaracteristic(null);
+
         $actioner->setActionnable($heal);
         $this->drago->setMagic(4);
         $this->assertSame(4, $this->drago->getMagic());
