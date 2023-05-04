@@ -24,6 +24,12 @@ class Caracteristic
     #[ORM\OneToOne(mappedBy: 'caracteristic', cascade: ['persist', 'remove'])]
     private ?CaracteristicModifier $intelligenceModifier = null;
 
+    #[ORM\Column]
+    private ?int $strength = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?CaracteristicModifier $strengthModifier = null;
+
 
     public function getId(): ?int
     {
@@ -96,6 +102,30 @@ class Caracteristic
         }
 
         $this->intelligenceModifier = $intelligenceModifier;
+
+        return $this;
+    }
+
+    public function getStrength(): ?int
+    {
+        return $this->strength;
+    }
+
+    public function setStrength(int $strength): self
+    {
+        $this->strength = $strength;
+
+        return $this;
+    }
+
+    public function getStrengthModifier(): ?CaracteristicModifier
+    {
+        return $this->strengthModifier;
+    }
+
+    public function setStrengthModifier(?CaracteristicModifier $strengthModifier): self
+    {
+        $this->strengthModifier = $strengthModifier;
 
         return $this;
     }

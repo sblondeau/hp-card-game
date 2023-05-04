@@ -12,7 +12,8 @@ class Fight extends AbstractAction
 
     protected function applyEffect(): void
     {
-        $this->getTarget()->setLife($this->getTarget()->getLife() - self::DAMAGE);
+        $damage = self::DAMAGE + $this->getAttacker()->getCaracteristic()->getStrength();
+        $this->getTarget()->setLife($this->getTarget()->getLife() - $damage);
     }
 
     public function getPossibleTargets(): ?Collection

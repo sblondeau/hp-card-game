@@ -14,6 +14,7 @@ use App\Service\PlayerSwitcher;
 use App\Entity\CardCaracteristic;
 use App\Service\Actions\HealPotion;
 use App\Entity\CaracteristicModifier;
+use App\Service\Actions\Fight;
 use App\Service\Actions\IntelligencePotion;
 use App\Service\Factory\ArenaFactory;
 use App\Service\Factory\PlayerFactory;
@@ -131,4 +132,31 @@ class CaracteristicTest extends KernelTestCase
         $this->drago->getCaracteristic()->setIntelligence(12);
         $this->assertSame(16, $this->drago->getMagic());
     }
+
+    public function testStrength(): void
+    {
+        $this->drago->getCaracteristic()->setStrength(20);
+        $this->assertSame(20, $this->drago->getCaracteristic()->getStrength());
+    }
+
+    // strength add damage to fight  
+    public function testAttackWithStrength(): void
+    {
+        $actioner = new Actioner();
+        $actioner->setPlayerSwitcher($this->actioner->getPlayerSwitcher());
+        $fight = new Fight();
+        $actioner->setAttacker($this->drago);
+        $actioner->setActionnable($fight);
+        $actioner->setTarget($this->harry);
+        $this->assertSame(95, $this->harry->getLife());
+
+        $this->drago->getCaracteristic()->setStrength(2);
+
+        $this->actioner->getPlayerSwitcher()->switch();
+        $actioner->setAttacker($this->drago);
+        $actioner->setActionnable($fight);
+        $actioner->setTarget($this->harry);
+        $this->assertSame(88, $this->harry->getLife());
+    }
+
 }
