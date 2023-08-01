@@ -25,7 +25,7 @@ class Caracteristic
     private ?CaracteristicModifier $intelligenceModifier = null;
 
     #[ORM\Column]
-    private ?int $strength = null;
+    private ?int $strength = 0;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?CaracteristicModifier $strengthModifier = null;

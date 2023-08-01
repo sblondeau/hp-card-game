@@ -1,32 +1,33 @@
 <div class="card
-						    {% if app.session.get('actioner').attacker is not null %}
-						        {% if app.session.get('actioner').attacker == card %}
-						            attacker
-						            {% else %}
-						            not-attacker
-						            {% endif %}
-						    {% endif %}
-		
-						    {{ possibleTargets is defined and card in possibleTargets ? 'targetable' }}">
-	<img src="{{ asset('build/images/cards/' ~ card.image )}}" class="card-img" alt="...">
+	{% if app.session.get('actioner').attacker is not null %}
+		{{ app.session.get('actioner').attacker == card ? 'attacker' : 'not-attacker' }}
+	{% endif %}
+
+	{{ possibleTargets is defined and card in possibleTargets ? 'targetable' }}">
+	<img src="{{ asset('build/images/cards/' ~ card.image )}}" class="card-img" alt="{{ card.name }}">
 	<a href="play/{{ card.identifier }}">
 		<div class="card-img-overlay">
 			<h3 class="card-title">{{ card.name }}</h3>
-			<p class="card-text">Vie:
+			<p class="card-text">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewbox="0 0 16 16">
+					<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+				</svg>
 				{{ card.life }}</p>
-			<p class="card-text">Magie:
+			<p class="card-text">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-magic" viewbox="0 0 16 16">
+					<path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0v1.829Zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707L14 2.707ZM7.293 4A.5.5 0 1 0 8 3.293L6.707 2A.5.5 0 0 0 6 2.707L7.293 4Zm-.621 2.5a.5.5 0 1 0 0-1H4.843a.5.5 0 1 0 0 1h1.829Zm8.485 0a.5.5 0 1 0 0-1h-1.829a.5.5 0 0 0 0 1h1.829ZM13.293 10A.5.5 0 1 0 14 9.293L12.707 8a.5.5 0 1 0-.707.707L13.293 10ZM9.5 11.157a.5.5 0 0 0 1 0V9.328a.5.5 0 0 0-1 0v1.829Zm1.854-5.097a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L8.646 5.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0l1.293-1.293Zm-3 3a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L.646 13.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0L8.354 9.06Z"/>
+				</svg>
 				{{ card.magic }}</p>
 			<p class="card-text">Intelligence :
 				{{ card.caracteristic.intelligenceDetails.basic ?? '' }}
 				{% if card.caracteristic.intelligenceDetails.bonus %}
-					(+
+					{{ card.caracteristic.intelligenceDetails.bonus > 0 ? '+' : '-' }}
 					{{ card.caracteristic.intelligenceDetails.bonus }}
-					|
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hourglass-split" viewbox="0 0 16 16">
+						<path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"/>
+					</svg>
 					{{ card.caracteristic.intelligenceDetails.duration }}
-					turn
-					)
 				{% endif %}
-
 			</p>
 		</div>
 	</a>

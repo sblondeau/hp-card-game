@@ -4,11 +4,12 @@
 {% endblock %}
 
 {% block body %}
-	<main class="container-fluid">
+	<header class="d-flex bg-dark text-light align-items-center gap-3">
 		<h1>Arena name</h1>
-		<a class="btn btn-danger position-absolute top-0 end-0 m-3" href="{{ path('reset') }}">Reset</a>
-		<a class="btn btn-secondary" href="play/fight">Fight</a>
+		<a class="btn btn-danger btn-sm" href="{{ path('reset') }}">Reset</a>
+	</header>
 
+	<main id="swup" class="container-fluid d-flex h-100 flex-column justify-content-beetween">
 		{% for player in playerSwitcher.players %}
 			<div class="d-flex justify-content-between m-3 p-3 {{ playerSwitcher.currentPlayer == player ? 'currentPlayer' : 'otherPlayer' }}">
 				<div class="d-flex gap-2">
@@ -19,12 +20,19 @@
 				<div class="d-flex">
 					{% for action in player.actions %}
 						{% include 'fight/_action.html.twig' %}
-
 					{% endfor %}
-
 				</div>
 			</div>
-
+			{% if loop.first %}
+				<div class="d-flex justify-content-center">
+					<a class="btn btn-lg btn-light" href="play/fight">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightning-fill" viewbox="0 0 16 16">
+							<path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5z"/>
+						</svg>
+						Fight
+					</a>
+				</div>
+			{% endif %}
 		{% endfor %}
 	</main>
 {% endblock %}
